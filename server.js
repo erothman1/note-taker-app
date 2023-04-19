@@ -73,6 +73,17 @@ app.post("/api/notes", (req, res) => {
 
 })
 
+app.delete("/api/notes/:id", (req, res) => {
+    const selectedNote = JSON.parse(req.params.id)
+    console.log(selectedNote)
+
+    const parseNote = JSON.parse(notes)
+    parseNote.filter(value => value.id != selectedNote)
+
+    const stringNote = JSON.stringify(parseNote)
+    res.json(stringNote)
+})
+
 //HTML route to return to index.html
 //wildcard path
 app.get("*", (req, res) =>
