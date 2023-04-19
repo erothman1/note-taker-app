@@ -23,11 +23,12 @@ app.get("/api/notes", (req, res) => {
 
     console.info(`${req.method} request received to get notes`)
 
-    readFile("./db/db.json", "utf-8", (err, data) => {
-        err? console.log(err) : res.json(data)
-    })
+    // readFile("./db/db.json", "utf-8", (err, data) => {
+    //     err? console.log(err) : res.json(data)
+    // })
+
     //sending all notes to client
-    // res.json(notes)
+    res.json(notes)
 })
 
 //API route to receive new note to save on request body, add it to db.json and return new note to client
@@ -40,16 +41,17 @@ app.post("/api/notes", (req, res) => {
         const newNote = {
             title,
             text,
-            noteId: uuidv4(),
+            id: uuidv4(),
         }
 
         // const noteString = JSON.stringify(newNote)
 
         readFile(`./db/db.json`, "utf-8", (err, data) => {
-            console.log(err)
+            if (err) {
+                throw err
+            }
+    
             const dataString = JSON.parse(data)
-            console.log(dataString)
-            console.log(newNote)
             dataString.push(newNote)
             
             writeFile(`./db/db.json`, JSON.stringify(dataString), (err) =>
@@ -65,7 +67,7 @@ app.post("/api/notes", (req, res) => {
         console.log(response)
         res.status(201).json(response)
     } else {
-        // res.status(500).json("Error writing note")
+        res.status(500).json("Error writing note")
     }
 
 })
