@@ -1,7 +1,7 @@
 const express = require("express")
 const path = require("path")
 const { writeFile, readFile } = require("fs")
-const uuid = require("uuid") //generates unique ids
+const {v4 : uuidv4} = require("uuid") //generates unique ids
 const notes = require("./db/db.json")
 
 const PORT = 3001
@@ -20,12 +20,14 @@ app.get("/notes", (req, res) =>
 
 //API route to read db.json and return saved notes as JSON
 app.get("/api/notes", (req, res) => {
-    res.json(`${req.method} request received to get notes`)
 
     console.info(`${req.method} request received to get notes`)
 
+    readFile("./db/db.json", "utf-8", (err, data) => {
+        err? console.log(err) : res.json(data)
+    })
     //sending all notes to client
-    return res.json(notes)
+    // res.json(notes)
 })
 
 //API route to receive new note to save on request body, add it to db.json and return new note to client
@@ -38,14 +40,22 @@ app.post("/api/notes", (req, res) => {
         const newNote = {
             title,
             text,
-            note_id: uuid(),
+            noteId: uuidv4(),
         }
 
-        const noteString = JSON.stringify(newNote)
+        // const noteString = JSON.stringify(newNote)
 
-        writeFile(`./db/db.json`, noteString, (err) =>
+        readFile(`./db/db.json`, "utf-8", (err, data) => {
+            console.log(err)
+            const dataString = JSON.parse(data)
+            console.log(dataString)
+            console.log(newNote)
+            dataString.push(newNote)
+            
+            writeFile(`./db/db.json`, JSON.stringify(dataString), (err) =>
             err ? console.error(err) : console.log("Note has been written to JSON file🤓")
         )
+        })
 
         const response = {
             status: "success",
@@ -55,14 +65,14 @@ app.post("/api/notes", (req, res) => {
         console.log(response)
         res.status(201).json(response)
     } else {
-        res.status(500).json("Error writing note")
+        // res.status(500).json("Error writing note")
     }
 
 })
 
 //HTML route to return to index.html
 //wildcard path
-app.get("/*", (req, res) =>
+app.get("*", (req, res) =>
     res.sendFile(path.join(__dirname, "/public/index.html"))
 )
 
