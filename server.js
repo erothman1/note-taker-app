@@ -22,3 +22,18 @@ app.get("/notes", (req, res) =>
 app.get("*", (req, res) =>
     res.sendFile(path.join(__dirname, "/public/index.html"))
 )
+
+//API route to read db.json and return saved notes as JSON
+app.get("/api/notes", (req, res) => {
+    res.json(`${req.method} request received to get notes`)
+
+    console.info(`${req.method} request received to get notes`)
+    
+    //more code here?
+})
+
+//API route to receive new note to save on request body, add it to db.json. and return new note to client
+app.post("/api/notes", (req, res) => {
+    console.info(`${req.method} request received to add a note`)
+    
+})
