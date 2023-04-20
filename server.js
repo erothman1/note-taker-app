@@ -77,22 +77,42 @@ app.delete("/api/notes/:id", (req, res) => {
     const selectedId = req.params.id
     console.log(`ID: ${selectedId}`)
 
-    // const parseNote = JSON.parse(notes)
-    const result = notes.filter(note => note.id != selectedId)
-    console.log(`RESULT: ${JSON.stringify(result)}`)
+    // // const parseNote = JSON.parse(notes)
+    // const result = notes.filter(note => note.id != selectedId)
+    // console.log(`RESULT: ${JSON.stringify(result)}`)
 
-    // const stringNote = JSON.stringify(result)
-    // res.json(JSON.stringify(result))
+    // // const stringNote = JSON.stringify(result)
+    // // res.json(JSON.stringify(result))
 
-    writeFile("./db/db.json", JSON.stringify(result, null, 4), (err) => {
+    // writeFile("./db/db.json", JSON.stringify(result, null, 4), (err) => {
+    //     if (err) {
+    //         throw err
+    //     }
+
+    //     res.json(JSON.stringify(result))
+
+    //     // readFile("./db/db.json", "utf-8", (err, data) => {
+    //     //     err? console.log(err) : res.json(JSON.stringify(data))
+    //     // })
+    // })
+
+    readFile("./db/db.json", "utf-8", (err, data) => {
         if (err) {
             throw err
         }
+        const result = JSON.parse(data).filter(note => note.id != selectedId)
+
+        writeFile("./db/db.json", JSON.stringify(result, null, 4), (err) => {
+            if (err) {
+                throw err
+            }
+
+            readFile("./db/db.json", "utf-8", (err, data) => {
+                err? console.log(err) : res.json(JSON.stringify(data))
+            })
+        })
     })
 
-    readFile("./db/db.json", "utf-8", (err, data) => {
-        err? console.log(err) : res.json(data)
-    })
     
 })
 
