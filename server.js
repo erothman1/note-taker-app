@@ -4,7 +4,7 @@ const { writeFile, readFile } = require("fs")
 const {v4 : uuidv4} = require("uuid") //generates unique ids
 const notes = require("./db/db.json")
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 const app = express()
 
@@ -27,8 +27,6 @@ app.get("/api/notes", (req, res) => {
         err? console.log(err) : res.json(JSON.parse(data))
     })
 
-    //sending all notes to client
-    // res.json(notes)
     console.log(notes)
 })
 
@@ -44,8 +42,6 @@ app.post("/api/notes", (req, res) => {
             text,
             id: uuidv4(),
         }
-
-        // const noteString = JSON.stringify(newNote)
 
         readFile(`./db/db.json`, "utf-8", (err, data) => {
             if (err) {
@@ -73,28 +69,10 @@ app.post("/api/notes", (req, res) => {
 
 })
 
+//API route to delete notes when trash can is clicked 
 app.delete("/api/notes/:id", (req, res) => {
     const selectedId = req.params.id
     console.log(`ID: ${selectedId}`)
-
-    // // const parseNote = JSON.parse(notes)
-    // const result = notes.filter(note => note.id != selectedId)
-    // console.log(`RESULT: ${JSON.stringify(result)}`)
-
-    // // const stringNote = JSON.stringify(result)
-    // // res.json(JSON.stringify(result))
-
-    // writeFile("./db/db.json", JSON.stringify(result, null, 4), (err) => {
-    //     if (err) {
-    //         throw err
-    //     }
-
-    //     res.json(JSON.stringify(result))
-
-    //     // readFile("./db/db.json", "utf-8", (err, data) => {
-    //     //     err? console.log(err) : res.json(JSON.stringify(data))
-    //     // })
-    // })
 
     readFile("./db/db.json", "utf-8", (err, data) => {
         if (err) {
@@ -111,9 +89,7 @@ app.delete("/api/notes/:id", (req, res) => {
                 err? console.log(err) : res.json(JSON.stringify(data))
             })
         })
-    })
-
-    
+    })    
 })
 
 //HTML route to return to index.html
