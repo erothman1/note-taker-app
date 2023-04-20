@@ -74,14 +74,26 @@ app.post("/api/notes", (req, res) => {
 })
 
 app.delete("/api/notes/:id", (req, res) => {
-    const selectedNote = JSON.parse(req.params.id)
-    console.log(selectedNote)
+    const selectedId = req.params.id
+    console.log(`ID: ${selectedId}`)
 
-    const parseNote = JSON.parse(notes)
-    parseNote.filter(value => value.id != selectedNote)
+    // const parseNote = JSON.parse(notes)
+    const result = notes.filter(note => note.id != selectedId)
+    console.log(`RESULT: ${JSON.stringify(result)}`)
 
-    const stringNote = JSON.stringify(parseNote)
-    res.json(stringNote)
+    // const stringNote = JSON.stringify(result)
+    // res.json(JSON.stringify(result))
+
+    writeFile("./db/db.json", JSON.stringify(result, null, 4), (err) => {
+        if (err) {
+            throw err
+        }
+    })
+
+    readFile("./db/db.json", "utf-8", (err, data) => {
+        err? console.log(err) : res.json(data)
+    })
+    
 })
 
 //HTML route to return to index.html

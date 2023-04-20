@@ -1,10 +1,5 @@
 [
     {
-        "title": "Test title",
-        "text": "Test text",
-        "id": "e364b16a-8205-409e-80e5-9190479c0b44"
-    },
-    {
         "title": "Hotdog ",
         "text": "chili, onions, mustard",
         "id": "8572515e-02c0-415a-b1f9-282b82f2571b"
@@ -13,25 +8,5 @@
         "title": "Cupcake",
         "text": "yummy",
         "id": "d16457eb-14e0-4f70-a838-668a51b94fc2"
-    },
-    {
-        "title": "hey",
-        "text": "sup",
-        "id": "5aaf860d-df5b-4a69-9f13-66d3e39600a0"
-    },
-    {
-        "title": "Need new lipgloss",
-        "text": "haha",
-        "id": "73290132-e1cb-41a4-8e5d-8bf9ef7d7f54"
-    },
-    {
-        "title": "Hot cheetos",
-        "text": "need",
-        "id": "fa666311-6d05-49c0-b072-a12f2b4eaef3"
-    },
-    {
-        "title": "hi",
-        "text": "hi",
-        "id": "2b55016a-4e97-4b95-916f-26956569156d"
     }
 ]
